@@ -26,8 +26,35 @@ main
 	B loop
 
 question1
-	; This subroutine takes 8 integer arguments and computes the product of these integers
+	; This calls a subroutine (calcProduct) which takes 8 integer arguments
+	; and computes the product of these integers
 	; Extra arguments are passed via the stack & return value is in R0
+	MOV R0, #1
+	MOV R1, #2
+	MOV R2, #3
+	MOV R3, #4
+	; These first 4 args are used normally, the next ones we need to put on the stack
+	MOV R4, #5
+	MOV R5, #6
+	MOV R6, #7
+	MOV R7, #8
+	PUSH {R4-R7} ; Push these ones onto the stack
+	B calcProduct
+	
+calcProduct
+	MUL R0, R1 ; R0 = R0 * R1
+	MUL R0, R2 ; R0 = R0 * R2
+	MUL R0, R3 ; R0 = R0 * R3
+	; Now we need to loop through our registers that are on the stack
+	; and multiply them into our current product
+	; we know there are 4 of them so we start with a counter variable in R1
+	MOV R1, #4
+loopProduct
+	POP {R2} ; pops the top value of the stack into R2
+	MUL R0, R2 ; R0 = R0 * R2 (top of the stack)
+	SUBS R1, #1 ; Subtract 1 from the counter
+	BXEQ LR ; If our counter is 0 then we can return to the caller (main)
+	B loopProduct ; Continue looping if our counter isn't 0
 	
 question2
 	; This subroutine implements a Caesar Shift Encryption
