@@ -26,8 +26,22 @@ main
 	B loop
 
 question1
-	; This subroutine takes 8 integer arguments and computes the product of these integers
+	; This calls a subroutine (calcProduct) which takes 8 integer arguments
+	; and computes the product of these integers
 	; Extra arguments are passed via the stack & return value is in R0
+	MOV R0, #1
+	MOV R1, #2
+	MOV R2, #3
+	MOV R3, #4
+	; These first 4 args are used normally, the next ones we need to put on the stack
+	MOV R4, #5
+	MOV R5, #6
+	MOV R6, #7
+	MOV R7, #8
+	PUSH {R4-R7} ; Push these ones onto the stack
+	BL calcProduct
+	
+calcProduct
 	
 question2
 	; This subroutine implements a Caesar Shift Encryption
