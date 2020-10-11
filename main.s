@@ -42,6 +42,19 @@ question1
 	BL calcProduct
 	
 calcProduct
+	MUL R0, R1 ; R0 = R0 * R1
+	MUL R0, R2 ; R0 = R0 * R2
+	MUL R0, R3 ; R0 = R0 * R3
+	; Now we need to loop through our registers that are on the stack
+	; and multiply them into our current product
+	; we know there are 4 of them so we start with a counter variable in R1
+	MOV R1, #4
+loopProduct
+	POP {R2} ; pops the top value of the stack into R2
+	MUL R0, R2 ; R0 = R0 * R2 (top of the stack)
+	SUBS R1, #1 ; Subtract 1 from the counter
+	BXEQ LR ; If our counter is 0 then we can return to the call
+	B loopProduct ; Continue looping if our counter isn't 0
 	
 question2
 	; This subroutine implements a Caesar Shift Encryption
