@@ -39,7 +39,7 @@ question1
 	MOV R6, #7
 	MOV R7, #8
 	PUSH {R4-R7} ; Push these ones onto the stack
-	BL calcProduct
+	B calcProduct
 	
 calcProduct
 	MUL R0, R1 ; R0 = R0 * R1
@@ -53,7 +53,7 @@ loopProduct
 	POP {R2} ; pops the top value of the stack into R2
 	MUL R0, R2 ; R0 = R0 * R2 (top of the stack)
 	SUBS R1, #1 ; Subtract 1 from the counter
-	BXEQ LR ; If our counter is 0 then we can return to the call
+	BXEQ LR ; If our counter is 0 then we can return to the caller (main)
 	B loopProduct ; Continue looping if our counter isn't 0
 	
 question2
