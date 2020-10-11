@@ -121,6 +121,17 @@ question5
 	; Arguments: R0 = first number, R1 = second number
 	; Returns: R0 = number of bits that differ
 	
+	; XORing the values of R0 and R1 will make it so that all bits that differ
+	; between the 2 numbers will be a 1 in the updated register, then we just
+	; need to count the number of ones in our new R0 register to determine the 
+	; hamming distance, so we can use the subroutine from question 4 to accomplish this
+	MOV R0, #0x000F
+	MOVT R0, #0x0000
+	MOV R1, #0x0000
+	MOVT R1, #0x0000
+	EOR R0, R1 
+	B countOneBits
+	
 loop   B    loop
 
 
