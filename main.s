@@ -97,6 +97,23 @@ question4
 	; i.e. determines the parity of the 32-bit number
 	; Arguments: R0 = number to check
 	; Returns: R0 = Number of 1 bits
+	MOV R0, #0x0F0F
+	MOVT R0, #0x0F0F ; sets our 32 bit number to be half 1's
+	B countOneBits
+	
+countOneBits
+	MOV R1, #32 ; counter variable for our 32 bit number
+	MOV R2, #0 ; count of the 1 bits
+countingLoop
+	CMP R0, #0 ; compare our R0 value to 0, to check if there is a 1 in the MSB
+	; If our LT flag is set, than we know the MSB is a 1 because only negative
+	; numbers are less than 0 and all negative numbers have a 1 in the MSB, so add 1 to the counter
+	ADDLT R2, #1 
+	LSL R0, #1 ; Now shift the value one bit to the left to update the MSB
+	SUBS R1, #1 ; Subtract 1 from our loop counter
+	BNE countingLoop ; Check if the loop counter is 0, if it isn't continue looping
+	MOV R0, R2 ; otherwise move the value in R2 (the number of 1's) into R0 to return it
+	BX LR ; and go back to the main function
 	
 question5
 	; Uses a subroutine to find out how many bits differ in 2 32-bit numbers
