@@ -2,7 +2,7 @@
 ; main.s
 ; Author: Quinn Kleinfelter
 ; Date Created: 10/11/2020
-; Last Modified: 10/11/2020
+; Last Modified: 10/13/2020
 ; Section Number: 001/003
 ; Instructor: Devinder Kaur / Suba Sah
 ; Homework Number: 6
