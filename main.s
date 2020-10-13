@@ -11,6 +11,8 @@
 ;*******************************************************************
 
 
+	   AREA DATA
+A 	   SPACE 7 ; 6 characters of space + an ending byte for null term
 
        AREA    |.text|, CODE, READONLY, ALIGN=2
        THUMB
@@ -58,6 +60,50 @@ loopProduct
 	
 question2
 	; This subroutine implements a Caesar Shift Encryption
+	BL initString
+	LDR R0, =A ; Load address of beginning of string into R0
+	MOV R1, #3 ; Set our shift value to 3
+	BL caesarShift
+	
+initString
+	LDR R0, =A
+	MOV R1, #67 ; Character C
+	STRB R1, [R0], #1 ; Store it in the first element of array
+	
+	MOV R1, #97 ; Character a
+	STRB R1, [R0], #1 
+	
+	MOV R1, #101 ; e
+	STRB R1, [R0], #1
+	
+	MOV R1, #115 ; s
+	STRB R1, [R0], #1
+	
+	MOV R1, #97 ; a 
+	STRB R1, [R0], #1
+	
+	MOV R1, #114 ; r
+	STRB R1, [R0], #1
+	BX LR
+	
+caesarShift
+caesarLoop
+	LDRB R2, [R0] ; Read the value at R0 into R2
+	CMP R2, #0 ; compare that to 0
+	BXEQ LR ; If we hit the null-term exit
+	CMP R2, #97 ; Compare the value to lowercase a
+	ADD R2, R1 ; Shift it by the specified amount of characters
+	BHS lowercase ; branch out if we need to do some rollover with lowercase
+	CMP R2, #90 ; Compare R2 to Z
+	SUBHI R2, #26 ; If we're greater than 90 (Z) we need to roll over
+	B continue ; continue looping
+lowercase
+	CMP R2, #122 ; Check if we're greater than 122 (z)
+	SUBHI R2, #26 ; rollover to the beginning of the alphabet
+continue
+	STRB R2, [R0] ; Store the byte at R2 into the address at R0
+	ADD R0, #1 ; add one byte to R0 so we go to the next char in the string
+	B caesarLoop ; Continue the loop
 
 question3
 	; This uses a subroutine called MoviePrice to calculate the movie ticket price based
